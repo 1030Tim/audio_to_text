@@ -177,7 +177,7 @@ def split_text():
             f.write('\n'.join(text))
             f.write('\n')
 
-
+# 切割辨識
 def modify():
     #串接api
     global api_key
