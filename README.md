@@ -571,7 +571,7 @@ final_3.txt
 Clone repository：
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/1030Tim/audio_to_text
 
 cd voice-to-text
 ```
