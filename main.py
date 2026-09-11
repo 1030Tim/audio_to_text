@@ -1,6 +1,14 @@
 from pydub import AudioSegment
 import os
 
+
+def get_run_time():
+    import datetime
+    a,b = str(datetime.datetime.now()).split(' ')
+    h,m,s = b.split(':')
+    s, sf = s.split('.')    
+    return int(h), int(m), int(s)
+
 # 取得音樂
 def imformation(path):
     if path.endswith('.m4a'):
@@ -10,18 +18,19 @@ def imformation(path):
     else:
         print("格式錯誤")
 
+    data_size = (len(audio)/1000)
     print("檔案資訊")
     print(f"長度{len(audio)/1000:.2f}秒")
     print(f"取量率{audio.frame_rate} HZ")
     print(f"聲道數{audio.channels}")
 
-    return audio
+    return audio, data_size
 
 #切割音樂
 def split_data(audio):
 
-    output_dir = 'trans/split'
-    os.makedirs("trans/split", exist_ok=True)
+    output_dir = '/Users/juhn/Desktop/agent/trans/split'
+    os.makedirs("/Users/juhn/Desktop/agent/trans/split", exist_ok=True)
 
     lenght = len(audio)
     chunk_lenght = 1*60*1000
@@ -259,9 +268,26 @@ def modify():
 
 
 if __name__ == '__main__':
-    audio = imformation('/Users/juhn/Desktop/agent/trans/test.m4a')
+    run_h, run_m, run_s = get_run_time()
+
+    start_time = run_h * 3600 + run_m * 60 + run_s
+
+    audio, data_size = imformation(
+        '/Users/juhn/Desktop/agent/trans/test.m4a'
+    )
+
     split_data(audio)
     audio2text()
     marge()
     split_text()
     modify()
+
+    end_h, end_m, end_s = get_run_time()
+
+    end_time = end_h * 3600 + end_m * 60 + end_s
+
+    run_time = end_time - start_time
+
+    print("======================")
+    print(f'音檔長度：{data_size / 60:.2f} 分鐘')
+    print(f'總執行時間：{run_time // 3600}時:{run_time % 3600 // 60}分:{run_time % 60}秒')
